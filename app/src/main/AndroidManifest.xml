@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.betahax.recipease" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -38,11 +38,11 @@
             android:name="com.betahax.recipease.RecipeBook"
             android:label="@string/title_activity_recipe_book"
             android:parentActivityName="com.betahax.recipease.HomeActivity" >
-
             <meta-data
                 android:name="android.support.HomeActivity"
                 android:value="com.betahax.recipease.RecipeBook" />
         </activity>
+
     </application>
 
 </manifest>

@@ -20,20 +20,20 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="0.33"
-        android:text="My Recipes"
-        android:id="@+id/btnMyRecipes"
-        android:layout_marginTop="5dp"
+        android:text="Random Recipes"
+        android:id="@+id/btnRandomRecipes"
         android:layout_marginBottom="5dp"
-        android:layout_gravity="bottom" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="0.33"
-        android:text="Random Recipes"
-        android:id="@+id/btnRandomRecipes"
+        android:text="My Recipes"
+        android:id="@+id/btnMyRecipes"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="bottom" />
 
 
 </LinearLayout>
