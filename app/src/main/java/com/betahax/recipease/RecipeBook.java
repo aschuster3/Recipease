@@ -11,7 +11,8 @@ import android.widget.Toast;
 public class RecipeBook extends Activity {
 
     Boolean displayRecipesAsGrid;
-    MenuItem item;
+    MenuItem menuItem;
+    Menu myMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +30,12 @@ public class RecipeBook extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.recipe_book, menu);
 
-        item = menu.findItem(R.id.RecipeListViewStyle);
-        item.getActionView().setOnClickListener(new View.OnClickListener() {
+        menuItem = menu.findItem(R.id.RecipeListViewStyle);
+        myMenu = menu;
+        menuItem.getActionView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onOptionsItemSelected(item);
-                //Toast toast = Toast.makeText(getApplicationContext(), "You clicked.!", Toast.LENGTH_SHORT);
-                //toast.show();
+                onOptionsItemSelected(menuItem);
 
             }
         });
@@ -48,21 +48,31 @@ public class RecipeBook extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        displayRecipesAsGrid ^= true;
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
+
         if (id == R.id.RecipeListViewStyle) {
+            displayRecipesAsGrid ^= true;
             if (displayRecipesAsGrid == true) {
                 setContentView(R.layout.fragment_recipe_book_grid);
-                item.setActionView(R.layout.grid);
-                Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(id), Toast.LENGTH_SHORT);
+                //menuItem.setTitle("Grid");
+                myMenu.clear();
+                onCreateOptionsMenu(myMenu);
+                Toast toast = Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT);
                 toast.show();
+
+
             }else {
                 setContentView(R.layout.fragment_recipe_book_list);
-                item.setActionView(R.layout.list);
+                //menuItem.setTitle("List");
+                myMenu.clear();
+                onCreateOptionsMenu(myMenu);
+                Toast toast = Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT);
+                toast.show();
             }
             return true;
         }
