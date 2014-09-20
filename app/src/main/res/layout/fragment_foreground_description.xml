@@ -1,43 +1,63 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
     tools:context="com.betahax.recipease.fragments.ForegroundDescription">
 
-    <TextView
-        android:id="@+id/recipe_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Recipe Name"/>
-
-    <TextView
-        android:id="@+id/ingredients_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Ingredients"/>
-    
     <LinearLayout
-        android:id="@+id/list_of_ingredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/directions_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Directions"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#00000000"/>
 
-    <TextView
-        android:id="@+id/directions_body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/recipe_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Recipe Name"/>
+
+            <TextView
+                android:id="@+id/ingredients_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Ingredients"/>
+
+            <LinearLayout
+                android:id="@+id/list_of_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"/>
+
+            <TextView
+                android:id="@+id/directions_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Directions"/>
+
+            <TextView
+                android:id="@+id/directions_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
