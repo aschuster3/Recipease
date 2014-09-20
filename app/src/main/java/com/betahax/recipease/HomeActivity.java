@@ -38,15 +38,6 @@ public class HomeActivity extends Activity {
             }
         });
 
-        btnRandomRecipes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent myIntent = new Intent("com.betahax.recipease.RecipeBook");
-                //startActivity(myIntent);
-                startActivity(new Intent(getApplicationContext(),InfoActivity.class));
-            }
-        });
-
        /* btnSearchRecipes.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
