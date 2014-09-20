@@ -103,7 +103,8 @@ public class QuestionTreeFragment extends Fragment {
                 questionComponents.add("Sweet");
                 questionComponents.add("Spicy");
                 questionComponents.add("Savory");
-                questionComponents.add("Like your mom");
+                questionComponents.add("Sour");
+                questionComponents.add("Bitter");
 
                 adapter = new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, questionComponents);
@@ -122,7 +123,6 @@ public class QuestionTreeFragment extends Fragment {
                         android.R.layout.simple_list_item_1, questionComponents);
                 break;
         }
-        Log.v("Tree", "" + questionComponents.size());
         gv.setAdapter(adapter);
 
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -135,7 +135,7 @@ public class QuestionTreeFragment extends Fragment {
         return view;
     }
 
-
+    // TODO reset on back button the states
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

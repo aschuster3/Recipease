@@ -62,6 +62,8 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
         return super.onOptionsItemSelected(item);
     }
 
+
+
     /**
      * Receives all the parameters from the questions
      */
@@ -93,7 +95,6 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
                         .commit();
                 break;
             case 3:
-                state++;
                 cookTime = var;
 
                 Intent intent = new Intent(this, Selector.class);
