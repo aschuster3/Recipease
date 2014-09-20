@@ -23,7 +23,7 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
     //Beef = 0, Chicken = 1, Pork = 2, Tofu = 3, Vegetarian = 4, Vegan = 5
     int base;
     //Check yummly,
-    String flavor;
+    int flavor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +57,11 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
 
 
 
-    @Override
     /**
      * Receives all the parameters from the questions
      */
-    public void OnQuestionTouch() {
+    @Override
+    public void onQuestionTouch(int var) {
 
     }
 }

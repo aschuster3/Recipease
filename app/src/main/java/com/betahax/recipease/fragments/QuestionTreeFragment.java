@@ -7,8 +7,13 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 
 import com.betahax.recipease.R;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,19 +55,20 @@ public class QuestionTreeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_question_tree, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_question_tree, container, false);
 
+        GridView gv = (GridView) view.findViewById(R.id.grid_view_blaaah);
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            if(questionNumber == 4)
-                //Final call back to activity
-                mListener.OnQuestionTouch();
-            else
-                questionNumber ++;
-                //Pull necessary information, move to next set of questions. That's just a placeholder
-        }
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String str = (String) adapterView.getAdapter().getItem(i);
+
+                mListener.onQuestionTouch(1);
+            }
+        });
+
+        return view;
     }
 
     @Override
@@ -94,7 +100,7 @@ public class QuestionTreeFragment extends Fragment {
      */
     public interface OnQuestionTouchListener {
         // TODO: Update argument type and name
-        public void OnQuestionTouch();
+        public void onQuestionTouch(int var);
     }
 
 }
