@@ -1,7 +1,9 @@
 package com.betahax.recipease;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,73 +13,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.betahax.recipease.fragments.HomeFragment;
 import com.betahax.recipease.fragments.RecipeBookListFragment;
+import com.betahax.recipease.fragments.SelectorFragment;
 
 
-public class HomeActivity extends Activity {
-
-    private static final String DEBUG_TAG = "Gestures";
-    Button btnSearchRecipes;
-    Button btnMyRecipes;
-    Button btnRandomRecipes;
+public class HomeActivity extends Activity implements
+        HomeFragment.OnHomeFragmentInteractionListener
+    {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_home);
-        btnSearchRecipes = (Button) findViewById(R.id.btnSearchRecipes);
-        btnRandomRecipes = (Button) findViewById(R.id.btnRandomRecipes);
-        btnMyRecipes = (Button) findViewById(R.id.btnMyRecipes);
-
-        btnMyRecipes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent myIntent = new Intent("com.betahax.recipease.RecipeBook");
-                //startActivity(myIntent);
-                startActivity(new Intent(getApplicationContext(),RecipeBook.class));
-            }
-        });
-
-        btnSearchRecipes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, QuestionTree.class));
-            }
-        });
-
-       /* btnSearchRecipes.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                int action = motionEvent.getAction();
-
-                switch(action) {
-
-                    case (MotionEvent.ACTION_DOWN) :
-                        Toast toast = Toast.makeText(getApplicationContext(), "Down", Toast.LENGTH_SHORT);
-                        toast.show();
-                        return true;
-                    case (MotionEvent.ACTION_MOVE) :
-                        toast = Toast.makeText(getApplicationContext(), "Move", Toast.LENGTH_SHORT);
-                        toast.show();
-                        return true;
-                    case (MotionEvent.ACTION_UP) :
-                        toast = Toast.makeText(getApplicationContext(), "Up", Toast.LENGTH_SHORT);
-                        toast.show();
-                        return true;
-                    case (MotionEvent.ACTION_CANCEL) :
-                        toast = Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT);
-                        toast.show();
-                        return true;
-                    case (MotionEvent.ACTION_OUTSIDE) :
-                        toast = Toast.makeText(getApplicationContext(), "??", Toast.LENGTH_SHORT);
-                        toast.show();
-                        return true;
-                    default :
-                        return false;
-                }
-            }
-        });*/
-
+        setContentView(R.layout.activity_home);
+        Fragment homeFragment = HomeFragment.newInstance();
+        getFragmentManager().beginTransaction().replace(R.id.container, homeFragment).addToBackStack("Lol").commit();
     }
     // Hay
 
@@ -132,4 +82,25 @@ public class HomeActivity extends Activity {
                 return super.onTouchEvent(event);
         }
     }
-}
+
+
+    @Override
+    public void OnRecipeBookInteraction() {
+        Intent myIntent = new Intent(this, RecipeBook.class);
+        startActivity(myIntent);
+
+    }
+
+    @Override
+    public void OnRandomInteraction() {
+        Intent myIntent = new Intent(this, Selector.class);
+        startActivity(myIntent);
+    }
+
+    @Override
+    public void OnSearchInteraction() {
+        Intent myIntent = new Intent(this, QuestionTree.class);
+        startActivity(myIntent);
+
+    }
+    }

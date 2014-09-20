@@ -32,7 +32,7 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question_tree);
+        setContentView(R.layout.activity_home);
 
         getFragmentManager().beginTransaction()
                 .add(R.id.container, QuestionTreeFragment.newInstance(state))

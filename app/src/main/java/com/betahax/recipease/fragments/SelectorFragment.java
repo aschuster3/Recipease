@@ -1,15 +1,15 @@
 package com.betahax.recipease.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.betahax.recipease.OnSwipeTouchListener;
 import com.betahax.recipease.R;
 
 /**
@@ -27,16 +27,13 @@ public class SelectorFragment extends Fragment {
 
 
     private int listPosition;
-    GestureDetector gestureDetector;
-
-    View.OnTouchListener gestureListener;
+    FrameLayout selectorLayout;
 
     private OnSelectorInteractionListener mListener;
 
-    public static SelectorFragment newInstance(int listPosition) {
+    public static SelectorFragment newInstance() {
         SelectorFragment fragment = new SelectorFragment();
         Bundle args = new Bundle();
-        args.putInt(List_Position, listPosition);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,13 +48,25 @@ public class SelectorFragment extends Fragment {
             listPosition = getArguments().getInt(List_Position);
         }
 
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_selector, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_selector, container, false);
+        selectorLayout = (FrameLayout) rootView.findViewById(R.id.selectorLayout);
+        selectorLayout.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+            @Override
+            public void onSwipeLeft() {
+                // Whatever
+
+                Toast toast = Toast.makeText(getActivity(), "Left", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        return rootView;
     }
 
 
@@ -90,7 +99,7 @@ public class SelectorFragment extends Fragment {
      */
     public interface OnSelectorInteractionListener {
         // TODO: Update argument type and name
-        public void OnSelectorInteraction(Uri uri);
+        public void OnSelectorInteraction();
     }
 
  }
