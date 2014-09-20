@@ -20,11 +20,19 @@
         </activity>
         <activity
             android:name="com.betahax.recipease.QuestionTree"
-            android:label="@string/title_activity_question_tree" >
+            android:label="@string/title_activity_question_tree"
+            android:parentActivityName="com.betahax.recipease.HomeActivity" >
+            <meta-data
+                android:name="android.support.HomeActivity"
+                android:value="com.betahax.recipease.QuestionTree" />
         </activity>
         <activity
             android:name="com.betahax.recipease.Selector"
-            android:label="@string/title_activity_selector" >
+            android:label="@string/title_activity_selector"
+            android:parentActivityName="com.betahax.recipease.HomeActivity" >
+            <meta-data
+                android:name="android.support.HomeActivity"
+                android:value="com.betahax.recipease.Selector" />
         </activity>
         <activity
             android:name="com.betahax.recipease.GroceryList"

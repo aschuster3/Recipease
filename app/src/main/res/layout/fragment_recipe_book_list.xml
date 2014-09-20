@@ -4,10 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.betahax.recipease.fragments.RecipeBookListFragment">
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_gravity="center_horizontal|top" />
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#33b5e6"
+            android:dividerHeight="2px" />
 
-</FrameLayout>
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No recipes"/>
+
+    </FrameLayout>

@@ -80,31 +80,36 @@ public class QuestionTreeFragment extends Fragment {
                 questionComponents.add("Breakfast");
                 questionComponents.add("Lunch");
                 questionComponents.add("Dinner");
-                questionComponents.add("Snack");
+                questionComponents.add("Appetizer");
+                questionComponents.add("Desserts");
+
 
                 adapter = new ArrayAdapter<String>(getActivity(),
                     android.R.layout.simple_list_item_1, questionComponents);
                 break;
             case BASE:
                 tv.setText("What should the base of your recipes be?");
-                questionComponents.add("Chicken");
                 questionComponents.add("Beef");
-                questionComponents.add("Pork");
+                questionComponents.add("Chicken");
                 questionComponents.add("Fish");
+                questionComponents.add("Pork");
                 questionComponents.add("Tofu");
-                questionComponents.add("Vegetarian");
                 questionComponents.add("Vegan");
+                questionComponents.add("Vegetarian");
 
                 adapter = new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, questionComponents);
                 break;
             case TASTE:
                 tv.setText("How would you like it to taste?");
-                questionComponents.add("Sweet");
-                questionComponents.add("Spicy");
-                questionComponents.add("Savory");
-                questionComponents.add("Sour");
                 questionComponents.add("Bitter");
+                questionComponents.add("Sweet");
+                questionComponents.add("Salty");
+                questionComponents.add("Sour");
+                questionComponents.add("Meaty");
+                questionComponents.add("Piquant");
+
+
 
                 adapter = new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, questionComponents);

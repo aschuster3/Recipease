@@ -2,23 +2,31 @@ package com.betahax.recipease;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.betahax.recipease.fragments.RecipeBookListFragment;
 
-public class RecipeBook extends Activity {
+
+public class RecipeBook extends Activity implements
+        RecipeBookListFragment.OnRecipeSelectionListener{
 
     Boolean displayRecipesAsGrid;
     MenuItem menuItem;
     Menu myMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         displayRecipesAsGrid = false;
-        setContentView(R.layout.fragment_recipe_book_list);
+        setContentView(R.layout.activity_home);
+        Fragment recipeFragment = RecipeBookListFragment.newInstance();
+        getFragmentManager().beginTransaction().replace(R.id.container, recipeFragment).addToBackStack(null).commit();
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -62,16 +70,15 @@ public class RecipeBook extends Activity {
             displayRecipesAsGrid ^= true;
             if (displayRecipesAsGrid == true) {
                 setContentView(R.layout.fragment_recipe_book_grid);
-                //menuItem.setTitle("Grid");
+                menuItem.setTitle("Grid");
                 myMenu.clear();
                 onCreateOptionsMenu(myMenu);
                 Toast toast = Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT);
                 toast.show();
 
-
             }else {
                 setContentView(R.layout.fragment_recipe_book_list);
-                //menuItem.setTitle("List");
+                menuItem.setTitle("List");
                 myMenu.clear();
                 onCreateOptionsMenu(myMenu);
                 Toast toast = Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT);
@@ -80,11 +87,12 @@ public class RecipeBook extends Activity {
             return true;
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.listView) {
-
-            return true;
-        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void OnRecipeSelected() {
+        Intent myIntent = new Intent(this, InfoActivity.class);
+        startActivity(myIntent);
     }
 }

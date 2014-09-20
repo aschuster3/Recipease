@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.33"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:text="Search for Recipes"
         android:id="@+id/btnSearchRecipes"
         android:layout_alignParentTop="true" />
@@ -22,6 +23,7 @@
         android:layout_weight="0.33"
         android:text="Random Recipes"
         android:id="@+id/btnRandomRecipes"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true" />
 

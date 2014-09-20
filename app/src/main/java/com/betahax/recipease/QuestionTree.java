@@ -37,6 +37,8 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
         getFragmentManager().beginTransaction()
                 .add(R.id.container, QuestionTreeFragment.newInstance(state))
                 .commit();
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
 

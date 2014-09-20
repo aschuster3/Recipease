@@ -19,7 +19,8 @@ import com.betahax.recipease.fragments.SelectorFragment;
 
 
 public class HomeActivity extends Activity implements
-        HomeFragment.OnHomeFragmentInteractionListener
+        HomeFragment.OnHomeFragmentInteractionListener,
+        SelectorFragment.OnSelectorInteractionListener
     {
 
     @Override
@@ -103,4 +104,9 @@ public class HomeActivity extends Activity implements
         startActivity(myIntent);
 
     }
+
+        @Override
+        public void OnSelectorInteraction() {
+
+        }
     }

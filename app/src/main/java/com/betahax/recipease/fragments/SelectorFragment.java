@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.betahax.recipease.OnSwipeTouchListener;
@@ -28,6 +29,7 @@ public class SelectorFragment extends Fragment {
 
     private int listPosition;
     FrameLayout selectorLayout;
+    TextView tvTest;
 
     private OnSelectorInteractionListener mListener;
 
@@ -56,13 +58,19 @@ public class SelectorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_selector, container, false);
+        tvTest = (TextView) rootView.findViewById(R.id.tvTest);
         selectorLayout = (FrameLayout) rootView.findViewById(R.id.selectorLayout);
-        selectorLayout.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
+        tvTest.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
             @Override
             public void onSwipeLeft() {
                 // Whatever
-
                 Toast toast = Toast.makeText(getActivity(), "Left", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            @Override
+        public void onSwipeRight () {
+                Toast toast = Toast.makeText(getActivity(), "Right", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
