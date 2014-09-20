@@ -33,30 +33,32 @@ public class QuestionGridAdapter extends ArrayAdapter<String> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.v("ConvertView", String.valueOf(position));
+        View view = convertView;
+
         ViewHolder holder;
 
 
         // Inflate the view
-        if (convertView == null) {
+        if (view == null) {
 
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
             LayoutInflater vi;
             vi = (LayoutInflater) getContext().getSystemService(inflater);
-            convertView = vi.inflate(R.layout.grid, parent, false);
+            view = vi.inflate(R.layout.grid, parent, false);
 
             holder = new ViewHolder();
 
-            holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
+            holder.tvName = (TextView) view.findViewById(R.id.tvName);
 
-            convertView.setTag(holder);
+            view.setTag(holder);
 
         } else {
 
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) view.getTag();
         }
 
         holder.tvName.setText(questions.get(position));
 
-        return convertView;
+        return view;
     }
 }

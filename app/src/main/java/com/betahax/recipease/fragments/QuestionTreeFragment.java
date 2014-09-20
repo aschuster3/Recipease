@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -70,8 +72,7 @@ public class QuestionTreeFragment extends Fragment {
 
         ArrayList<String> questionComponents = new ArrayList<String>();
 
-        QuestionGridAdapter adapter = new QuestionGridAdapter(this.getActivity(),
-                R.layout.grid, questionComponents);;
+        ArrayAdapter<String> adapter;
         // A quick switch to determine what state we're in for display purposes
         switch(questionNumber) {
             case MEAL_TYPE:
@@ -80,6 +81,9 @@ public class QuestionTreeFragment extends Fragment {
                 questionComponents.add("Lunch");
                 questionComponents.add("Dinner");
                 questionComponents.add("Snack");
+
+                adapter = new ArrayAdapter<String>(getActivity(),
+                    android.R.layout.simple_list_item_1, questionComponents);
                 break;
             case BASE:
                 tv.setText("What should the base of your recipes be?");
@@ -90,6 +94,9 @@ public class QuestionTreeFragment extends Fragment {
                 questionComponents.add("Tofu");
                 questionComponents.add("Vegetarian");
                 questionComponents.add("Vegan");
+
+                adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, questionComponents);
                 break;
             case TASTE:
                 tv.setText("How would you like it to taste?");
@@ -97,18 +104,25 @@ public class QuestionTreeFragment extends Fragment {
                 questionComponents.add("Spicy");
                 questionComponents.add("Savory");
                 questionComponents.add("Like your mom");
+
+                adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, questionComponents);
                 break;
             case COOK_TIME:
                 tv.setText("How much time to you have to prepare the meal?");
                 questionComponents.add("<30 minutes");
                 questionComponents.add("1 to 2 hours");
                 questionComponents.add(">2 hours");
+
+                adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, questionComponents);
                 break;
             default:
-                //panic
+                adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, questionComponents);
                 break;
         }
-
+        Log.v("Tree", "" + questionComponents.size());
         gv.setAdapter(adapter);
 
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
