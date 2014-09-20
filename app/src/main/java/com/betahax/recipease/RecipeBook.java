@@ -4,24 +4,49 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class RecipeBook extends Activity {
 
+    Boolean displayRecipesAsGrid;
+    MenuItem item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_book);
+        displayRecipesAsGrid = false;
+        setContentView(R.layout.fragment_recipe_book_list);
     }
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.recipe_book, menu);
-        return true;
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.recipe_book, menu);
+
+        item = menu.findItem(R.id.RecipeListViewStyle);
+        item.getActionView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(item);
+                //Toast toast = Toast.makeText(getApplicationContext(), "You clicked.!", Toast.LENGTH_SHORT);
+                //toast.show();
+                displayRecipesAsGrid ^= true;
+                if (displayRecipesAsGrid == false) {
+                    setContentView(R.layout.fragment_recipe_book_list);
+                    //item.findItem(R.id.RecipeGridViewStyle).setVisible(false);
+                }else {
+                    setContentView(R.layout.fragment_recipe_book_grid);
+                }
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -34,6 +59,10 @@ public class RecipeBook extends Activity {
             return true;
         }
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.listView) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

@@ -1,8 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.betahax.recipease.RecipeBook" >
+
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+    android:title="@string/action_settings"
+    android:orderInCategory="100"
+    android:showAsAction="never" />
+
+    <item android:id="@+id/RecipeGridViewStyle"
+        android:title="@string/displayRecipesAsGrid"
+        android:showAsAction="always"
+        android:actionLayout="@layout/grid" />
+
+
+    <item android:id="@+id/RecipeListViewStyle"
+        android:title="@string/displayRecipesAsGrid"
+        android:showAsAction="always"
+        android:actionLayout="@layout/list" />
+
 </menu>

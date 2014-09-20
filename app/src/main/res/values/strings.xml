@@ -4,6 +4,9 @@
     <string name="app_name">Recipease</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="QuestionNumber">QuestionNumber</string>
+    <string name="displayRecipesAsGrid">Grid</string>
+    <string name="displayRecipesAsList">List</string>
     <string name="title_activity_question_tree">QuestionTree</string>
     <string name="title_activity_selector">Selector</string>
     <string name="title_activity_grocery_list">GroceryList</string>

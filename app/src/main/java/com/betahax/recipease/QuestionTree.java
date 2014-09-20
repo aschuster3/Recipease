@@ -11,9 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import com.betahax.recipease.fragments.QuestionTreeFragment;
 
 
-public class QuestionTree extends Activity {
+public class QuestionTree extends Activity implements QuestionTreeFragment.OnQuestionTouchListener {
+
+    //Length of time available to cook
+    int cookTime;
+    //Breakfast = 0, Lunch = 1, Dinner = 2, Snack = 3
+    int mealTime;
+    //Beef = 0, Chicken = 1, Pork = 2, Tofu = 3, Vegetarian = 4, Vegan = 5
+    int base;
+    //Check yummly,
+    String flavor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,4 +56,12 @@ public class QuestionTree extends Activity {
     }
 
 
+
+    @Override
+    /**
+     * Receives all the parameters from the questions
+     */
+    public void OnQuestionTouch() {
+
+    }
 }
