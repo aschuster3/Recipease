@@ -8,13 +8,33 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".HomeActivity"
+            android:name="com.betahax.recipease.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.betahax.recipease.QuestionTree"
+            android:label="@string/title_activity_question_tree" >
+        </activity>
+        <activity
+            android:name="com.betahax.recipease.Selector"
+            android:label="@string/title_activity_selector" >
+        </activity>
+        <activity
+            android:name="com.betahax.recipease.GroceryList"
+            android:label="@string/title_activity_grocery_list" >
+        </activity>
+        <activity
+            android:name="com.betahax.recipease.InfoActivity"
+            android:label="@string/title_activity_info" >
+        </activity>
+        <activity
+            android:name="com.betahax.recipease.RecipeBook"
+            android:label="@string/title_activity_recipe_book" >
         </activity>
     </application>
 

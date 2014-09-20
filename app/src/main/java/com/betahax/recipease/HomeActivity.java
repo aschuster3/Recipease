@@ -2,11 +2,16 @@ package com.betahax.recipease;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.widget.Toast;
 
 
 public class HomeActivity extends Activity {
+
+    private static final String DEBUG_TAG = "Gestures";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +39,33 @@ public class HomeActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onTouchEvent(MotionEvent event){
+
+        int action = event.getAction();
+
+        switch(action) {
+
+            case (MotionEvent.ACTION_DOWN) :
+                Toast toast = Toast.makeText(this, "Down", Toast.LENGTH_SHORT);
+                toast.show();
+                return true;
+            case (MotionEvent.ACTION_MOVE) :
+                Log.d(DEBUG_TAG,"Action was MOVE");
+                return true;
+            case (MotionEvent.ACTION_UP) :
+                Log.d(DEBUG_TAG,"Action was UP");
+                return true;
+            case (MotionEvent.ACTION_CANCEL) :
+                Log.d(DEBUG_TAG,"Action was CANCEL");
+                return true;
+            case (MotionEvent.ACTION_OUTSIDE) :
+                Log.d(DEBUG_TAG,"Movement occurred outside bounds " +
+                        "of current screen element");
+                return true;
+            default :
+                return super.onTouchEvent(event);
+        }
     }
 }
