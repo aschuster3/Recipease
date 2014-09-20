@@ -7,14 +7,10 @@
     android:orderInCategory="100"
     android:showAsAction="never" />
 
-    <item android:id="@+id/RecipeGridViewStyle"
-        android:title="@string/displayRecipesAsGrid"
-        android:showAsAction="always"
-        android:actionLayout="@layout/grid" />
 
 
     <item android:id="@+id/RecipeListViewStyle"
-        android:title="@string/displayRecipesAsGrid"
+        android:title="@string/displayRecipesAsList"
         android:showAsAction="always"
         android:actionLayout="@layout/list" />
 

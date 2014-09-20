@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class RecipeBook extends Activity {
@@ -35,13 +36,7 @@ public class RecipeBook extends Activity {
                 onOptionsItemSelected(item);
                 //Toast toast = Toast.makeText(getApplicationContext(), "You clicked.!", Toast.LENGTH_SHORT);
                 //toast.show();
-                displayRecipesAsGrid ^= true;
-                if (displayRecipesAsGrid == false) {
-                    setContentView(R.layout.fragment_recipe_book_list);
-                    //item.findItem(R.id.RecipeGridViewStyle).setVisible(false);
-                }else {
-                    setContentView(R.layout.fragment_recipe_book_grid);
-                }
+
             }
         });
 
@@ -53,14 +48,28 @@ public class RecipeBook extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        displayRecipesAsGrid ^= true;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
+        if (id == R.id.RecipeListViewStyle) {
+            if (displayRecipesAsGrid == true) {
+                setContentView(R.layout.fragment_recipe_book_grid);
+                item.setActionView(R.layout.grid);
+                Toast toast = Toast.makeText(getApplicationContext(), String.valueOf(id), Toast.LENGTH_SHORT);
+                toast.show();
+            }else {
+                setContentView(R.layout.fragment_recipe_book_list);
+                item.setActionView(R.layout.list);
+            }
+            return true;
+        }
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.listView) {
+
             return true;
         }
         return super.onOptionsItemSelected(item);
