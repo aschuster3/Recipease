@@ -3,6 +3,7 @@ package com.betahax.recipease;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,11 +26,17 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
     //Check yummly,
     int flavor;
 
+    //State recorder for fragments
+    int state = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_tree);
 
+        getFragmentManager().beginTransaction()
+                .add(R.id.container, QuestionTreeFragment.newInstance(state))
+                .commit();
     }
 
 
@@ -55,13 +62,51 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
         return super.onOptionsItemSelected(item);
     }
 
-
-
     /**
      * Receives all the parameters from the questions
      */
     @Override
     public void onQuestionTouch(int var) {
+        switch (state) {
+            case 0:
+                state++;
+                mealTime = var;
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, QuestionTreeFragment.newInstance(state))
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case 1:
+                state++;
+                base = var;
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, QuestionTreeFragment.newInstance(state))
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case 2:
+                state++;
+                flavor = var;
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, QuestionTreeFragment.newInstance(state))
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case 3:
+                state++;
+                cookTime = var;
 
+                Intent intent = new Intent(this, Selector.class);
+                intent.putExtra("mealtime", mealTime);
+                intent.putExtra("base", base);
+                intent.putExtra("flavor", flavor);
+                intent.putExtra("cooktime", cookTime);
+
+                startActivity(intent);
+                break;
+            default:
+                // panic
+                break;
+        }
     }
 }

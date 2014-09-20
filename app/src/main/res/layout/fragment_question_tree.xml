@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.betahax.recipease.fragments.QuestionTreeFragment">
 
+    <TextView
+        android:id="@+id/grid_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <GridView
         android:id="@+id/grid_view_blaaah"
         android:layout_width="match_parent"

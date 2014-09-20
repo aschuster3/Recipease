@@ -38,6 +38,13 @@ public class HomeActivity extends Activity {
             }
         });
 
+        btnSearchRecipes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, QuestionTree.class));
+            }
+        });
+
        /* btnSearchRecipes.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

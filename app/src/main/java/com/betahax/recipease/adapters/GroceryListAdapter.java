@@ -1,4 +1,4 @@
-package com.betahax.recipease;
+package com.betahax.recipease.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import com.betahax.recipease.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,21 +20,19 @@ import java.util.List;
 public class GroceryListAdapter extends ArrayAdapter<String> {
 
     int resource;
-    List<String> Groceries;
+    List<String> groceries;
 
 
     public GroceryListAdapter(Context context, int resource,
                               ArrayList<String> items) {
         super(context, resource, items);
         this.resource = resource;
-        Groceries = items;
+        groceries = items;
     }
 
 
     public class ViewHolder {
-
         TextView tvName;
-        TextView tvAmount;
     }
 
     /**
@@ -41,7 +41,7 @@ public class GroceryListAdapter extends ArrayAdapter<String> {
      */
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.v("ConvertView", String.valueOf(position));
-        ViewHolder holder = null;
+        ViewHolder holder;
 
 
         // Inflate the view
@@ -50,13 +50,11 @@ public class GroceryListAdapter extends ArrayAdapter<String> {
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
             LayoutInflater vi;
             vi = (LayoutInflater) getContext().getSystemService(inflater);
-            convertView = vi.inflate(R.layout.grocery_item, null);
+            convertView = vi.inflate(R.layout.grocery_item, parent, false);
 
             holder = new ViewHolder();
 
             holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
-
-            holder.tvAmount = (TextView) convertView.findViewById(R.id.tvAmount);
 
             convertView.setTag(holder);
 
@@ -65,10 +63,9 @@ public class GroceryListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //Do Stuff
+        holder.tvName.setText(groceries.get(position));
 
         return convertView;
-
     }
 
 }
