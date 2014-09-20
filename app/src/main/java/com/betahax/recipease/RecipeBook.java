@@ -1,5 +1,6 @@
 package com.betahax.recipease;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,8 @@ public class RecipeBook extends Activity {
         super.onCreate(savedInstanceState);
         displayRecipesAsGrid = false;
         setContentView(R.layout.fragment_recipe_book_list);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
 

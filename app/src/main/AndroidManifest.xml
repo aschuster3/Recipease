@@ -36,7 +36,12 @@
         </activity>
         <activity
             android:name="com.betahax.recipease.RecipeBook"
-            android:label="@string/title_activity_recipe_book" >
+            android:label="@string/title_activity_recipe_book"
+            android:parentActivityName="com.betahax.recipease.HomeActivity" >
+
+            <meta-data
+                android:name="android.support.HomeActivity"
+                android:value="com.betahax.recipease.RecipeBook" />
         </activity>
     </application>
 
