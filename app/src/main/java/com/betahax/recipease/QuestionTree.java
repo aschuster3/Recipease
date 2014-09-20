@@ -64,7 +64,11 @@ public class QuestionTree extends Activity implements QuestionTreeFragment.OnQue
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        state--;
+        super.onBackPressed();
+    }
 
     /**
      * Receives all the parameters from the questions

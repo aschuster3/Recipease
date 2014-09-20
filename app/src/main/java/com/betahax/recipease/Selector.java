@@ -30,6 +30,8 @@ import org.json.JSONStringer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -93,11 +95,23 @@ public class Selector extends Activity {
 
     public String buildURL(String strMealTime, String strBase, String strFlavor, String strMaxCookTime,
                            String appID, String appKey, int positionOfRecipe) {
-        String strURL = "http://api.yummly.com/v1/api/recipes?_app_id=" + appID + "&_app_key=" + appKey + "&q=" + strBase +
-                "&maxTotalTimeInSeconds=" + strMaxCookTime + "&flavor." + strFlavor + ".min=0.8&allowedCourse[]=course^course-" +
-                strMealTime + "&maxResult=20&start="+positionOfRecipe;
-        this.positionOfRecipe  += 20;
+        String strURL = "";
 
+        try {
+            strURL = "http://api.yummly.com/v1/api/recipes?" +
+                    "_app_id=" + URLEncoder.encode(appID, "UTF-8") +
+                    "&_app_key=" + URLEncoder.encode(appKey, "UTF-8") +
+                    "&q=" + URLEncoder.encode(strBase, "UTF-8") +
+                    "&maxTotalTimeInSeconds=" + URLEncoder.encode(strMaxCookTime, "UTF-8") +
+                    "&flavor." + URLEncoder.encode(strFlavor, "UTF-8") +
+                    ".min=0.8&allowedCourse[]=" + URLEncoder.encode("course^course-" + strMealTime, "UTF-8") +
+                    "&maxResult=20&start=" + URLEncoder.encode(positionOfRecipe + "", "UTF-8");
+            this.positionOfRecipe += 20;
+        } catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+        }
+
+        Log.i("Selector", strURL);
 
         return strURL;
 
@@ -219,7 +233,8 @@ public class Selector extends Activity {
         String responseString = "";
        try {
            HttpClient httpclient = new DefaultHttpClient();
-           HttpResponse response = httpclient.execute(new HttpGet(URL));
+           HttpGet getMethod = new HttpGet(URL);
+           HttpResponse response = httpclient.execute(getMethod);
            StatusLine statusLine = response.getStatusLine();
            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -231,24 +246,21 @@ public class Selector extends Activity {
                //Closes the connection.
                response.getEntity().getContent().close();
            }
+
+           //Recipe object
+           JSONObject jsonObj = new JSONObject(responseString);
+           //Recipes JSONArray
+           JSONArray recipesArray = jsonObj.getJSONArray("matches");
+           for (int i = 0; i < recipesArray.length(); i ++) {
+               JSONObject c = recipesArray.getJSONObject(i);
+
+           }
        } catch (IOException ie) {
-
-       }
-
-        try {
-            //Recipe object
-            JSONObject jsonObj = new JSONObject(responseString);
-            //Recipes JSONArray
-            JSONArray recipesArray = jsonObj.getJSONArray("Boobs");
-            for (int i = 0; i < recipesArray.length(); i ++) {
-                JSONObject c = recipesArray.getJSONObject(i);
-
-            }
-
-        } catch (JSONException e) {
+           ie.printStackTrace();
+       } catch (JSONException e) {
             e.printStackTrace();
-        }
-        return responseString;
+       }
+       return responseString;
     }
 
 

@@ -10,12 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.betahax.recipease.fragments.HomeFragment;
 import com.betahax.recipease.fragments.RecipeBookListFragment;
 import com.betahax.recipease.fragments.SelectorFragment;
+import com.betahax.recipease.model.Recipe;
 
 
 public class HomeActivity extends Activity implements
@@ -105,8 +109,18 @@ public class HomeActivity extends Activity implements
 
     }
 
-        @Override
-        public void OnSelectorInteraction() {
+    @Override
+    public void populate(WebView image, TextView text) {
 
-        }
     }
+
+    @Override
+    public void swipedLeft() {
+
+    }
+
+    @Override
+    public void swipedRight(Recipe recipe, ImageView view) {
+
+    }
+}

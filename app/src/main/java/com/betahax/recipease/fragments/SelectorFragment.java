@@ -6,12 +6,15 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.betahax.recipease.OnSwipeTouchListener;
 import com.betahax.recipease.R;
+import com.betahax.recipease.model.Recipe;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,13 +32,13 @@ public class SelectorFragment extends Fragment {
 
     private int listPosition;
     FrameLayout selectorLayout;
-    TextView tvTest;
 
     private OnSelectorInteractionListener mListener;
 
     public static SelectorFragment newInstance() {
         SelectorFragment fragment = new SelectorFragment();
         Bundle args = new Bundle();
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,22 +61,9 @@ public class SelectorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_selector, container, false);
-        tvTest = (TextView) rootView.findViewById(R.id.tvTest);
-        selectorLayout = (FrameLayout) rootView.findViewById(R.id.selectorLayout);
-        tvTest.setOnTouchListener(new OnSwipeTouchListener(getActivity()) {
-            @Override
-            public void onSwipeLeft() {
-                // Whatever
-                Toast toast = Toast.makeText(getActivity(), "Left", Toast.LENGTH_SHORT);
-                toast.show();
-            }
 
-            @Override
-        public void onSwipeRight () {
-                Toast toast = Toast.makeText(getActivity(), "Right", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+
+
         return rootView;
     }
 
@@ -95,19 +85,10 @@ public class SelectorFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnSelectorInteractionListener {
-        // TODO: Update argument type and name
-        public void OnSelectorInteraction();
+        public void populate(WebView image, TextView text);
+        public void swipedLeft();
+        public void swipedRight(Recipe recipe, ImageView view);
     }
 
  }
