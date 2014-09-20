@@ -6,17 +6,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.widget.Button;
 import android.widget.Toast;
 
 
 public class HomeActivity extends Activity {
 
     private static final String DEBUG_TAG = "Gestures";
+    Button btnSearchRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
     }
     // Hay
 
@@ -52,17 +56,20 @@ public class HomeActivity extends Activity {
                 toast.show();
                 return true;
             case (MotionEvent.ACTION_MOVE) :
-                Log.d(DEBUG_TAG,"Action was MOVE");
+                toast = Toast.makeText(this, "Move", Toast.LENGTH_SHORT);
+                toast.show();
                 return true;
             case (MotionEvent.ACTION_UP) :
-                Log.d(DEBUG_TAG,"Action was UP");
+                toast = Toast.makeText(this, "Up", Toast.LENGTH_SHORT);
+                toast.show();
                 return true;
             case (MotionEvent.ACTION_CANCEL) :
-                Log.d(DEBUG_TAG,"Action was CANCEL");
+                toast = Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT);
+                toast.show();
                 return true;
             case (MotionEvent.ACTION_OUTSIDE) :
-                Log.d(DEBUG_TAG,"Movement occurred outside bounds " +
-                        "of current screen element");
+                toast = Toast.makeText(this, "??", Toast.LENGTH_SHORT);
+                toast.show();
                 return true;
             default :
                 return super.onTouchEvent(event);
