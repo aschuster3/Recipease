@@ -175,25 +175,25 @@ public class Selector extends Activity {
 
         switch (flavor) {
             case 0:
-                strFlavor = "Bitter";
+                strFlavor = "bitter";
                 break;
             case 1:
-                strFlavor = "Sweet";
+                strFlavor = "sweet";
                 break;
             case 2:
-                strFlavor = "Salty";
+                strFlavor = "salty";
                 break;
             case 3:
-                strFlavor = "Sour";
+                strFlavor = "sour";
                 break;
             case 4:
-                strFlavor = "Meaty";
+                strFlavor = "meaty";
                 break;
             case 6:
-                strFlavor = "Piquant";
+                strFlavor = "piquant";
                 break;
             default:
-                strFlavor = "Meaty";
+                strFlavor = "meaty";
                 break;
 
         }
