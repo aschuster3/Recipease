@@ -58,7 +58,7 @@ public class SelectorAdapter extends ArrayAdapter<Recipe> {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.tvName.setText();
+        //holder.tvName.setText();
 
         return view;
     }
