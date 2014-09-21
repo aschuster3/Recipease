@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
@@ -31,10 +33,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.betahax.recipease.fragments.SelectorFragment;
 import com.betahax.recipease.model.Recipe;
 
 
-public class Selector extends Activity {
+public class Selector extends Activity implements
+        SelectorFragment.OnSelectorInteractionListener {
 
     final static String appID = "02d4c5e9";
     final static String appKey = "dbed5bd0b04bf806e7ef81f440640548";
@@ -43,10 +47,16 @@ public class Selector extends Activity {
     String strBase, strMealTime, strFlavor, strMaxCookTime;
 
     ArrayList<Recipe> recipeArray = new ArrayList<Recipe>();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         cookTime = getIntent().getIntExtra("cooktime", 0);
         base = getIntent().getIntExtra("base", 0);
@@ -61,13 +71,7 @@ public class Selector extends Activity {
         PerformGetASYNC get = new PerformGetASYNC();
         get.execute();
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
 
@@ -96,8 +100,7 @@ public class Selector extends Activity {
     private String buildURL(String strMealTime, String strBase, String strFlavor, String strMaxCookTime,
                            String appID, String appKey, int positionOfRecipe) {
         String strURL = "http://api.yummly.com/v1/api/recipes?_app_id=" + appID + "&_app_key=" + appKey + "&q=" + strBase +
-                "&maxTotalTimeInSeconds=" + strMaxCookTime + "&flavor." + strFlavor + ".min=0.8&allowedCourse[]=course^course-" +
-                strMealTime + "&maxResult=20&start="+positionOfRecipe;
+                "&maxTotalTimeInSeconds=" + strMaxCookTime + "&flavor." + strFlavor + ".min=0.8&maxResult=20&start="+positionOfRecipe;
         this.positionOfRecipe  += 20;
 
 
@@ -219,21 +222,38 @@ public class Selector extends Activity {
 
         return ingredients;
     }
-    public class PerformGetASYNC extends AsyncTask<Void, Void, String> {
 
-       protected void onPostExecute(String response) {
+    @Override
+    public void populate(WebView image, TextView text) {
 
-            Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
-            toast.show();
+    }
+
+    @Override
+    public void swipedLeft() {
+
+    }
+
+    @Override
+    public void swipedRight(Recipe recipe, WebView image) {
+
+    }
+
+    public class PerformGetASYNC extends AsyncTask<Void, Void,   ArrayList<Recipe> > {
+
+       protected void onPostExecute( ArrayList<Recipe> result) {
+
+           Fragment selectorFragment = SelectorFragment.newInstance(recipeArray);
+           getFragmentManager().beginTransaction().replace(R.id.container, selectorFragment).addToBackStack(null).commit();
+
         }
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected   ArrayList<Recipe> doInBackground(Void... voids) {
             return performGET();
 
         }
     }
-    public String performGET(){
+    public   ArrayList<Recipe> performGET(){
         String responseString = "";
        try {
            HttpClient httpclient = new DefaultHttpClient();
@@ -258,10 +278,11 @@ public class Selector extends Activity {
             //Recipe object
             JSONObject jsonObj = new JSONObject(responseString);
             //Recipes JSONArray
-            JSONArray jsonRecipesArray = jsonObj.getJSONArray("Boobs");
+            JSONArray jsonRecipesArray = jsonObj.getJSONArray("matches");
+
             for (int i = 0; i < jsonRecipesArray.length(); i ++) {
                 Recipe recipe = new Recipe();
-                JSONObject childJSONObject = jsonRecipesArray.getJSONObject(i);
+                JSONObject childJSONObject = (JSONObject) jsonRecipesArray.get(i);
                 recipe.setID(childJSONObject.getString("id"));
                 recipe.setImgSrc(childJSONObject.getString("imageUrlsBySize"));
                 recipe.setname(childJSONObject.getString("sourceDisplayName"));
@@ -275,7 +296,7 @@ public class Selector extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return responseString;
+        return recipeArray;
     }
 
 

@@ -1,6 +1,7 @@
 package com.betahax.recipease.fragments;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,12 +10,15 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.betahax.recipease.OnSwipeTouchListener;
 import com.betahax.recipease.R;
+import com.betahax.recipease.api.ImageLoadTask;
 import com.betahax.recipease.model.Recipe;
+import com.betahax.recipease.adapters.SelectorAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,20 +29,32 @@ import com.betahax.recipease.model.Recipe;
  * create an instance of this fragment.
  *
  */
-public class SelectorFragment extends Fragment {
+public class SelectorFragment extends Fragment{
 
     private static final String List_Position = "listPosition";
 
 
     private int listPosition;
-    FrameLayout selectorLayout;
+    ArrayList<Recipe> recipeArray;
+
+    ListView lv;
+    WebView recipe_preview;
+
+    private SelectorAdapter selectorAdapter;
 
     private OnSelectorInteractionListener mListener;
 
-    public static SelectorFragment newInstance() {
+    public static SelectorFragment newInstance( ArrayList<Recipe> recipeArrayFromActivity) {
         SelectorFragment fragment = new SelectorFragment();
         Bundle args = new Bundle();
+        args.putSerializable("recipeArray", recipeArrayFromActivity);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    public static SelectorFragment newInstance( ) {
+        SelectorFragment fragment = new SelectorFragment();
+        Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,6 +68,8 @@ public class SelectorFragment extends Fragment {
         if (getArguments() != null) {
             listPosition = getArguments().getInt(List_Position);
         }
+        recipeArray = (ArrayList<Recipe>) getArguments().getSerializable("recipeArray");
+
 
 
     }
@@ -62,7 +80,12 @@ public class SelectorFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_selector, container, false);
 
+        recipe_preview = (WebView) rootView.findViewById(R.id.recipe_preview);
+        selectorAdapter = new SelectorAdapter(getActivity(),
+                R.layout.item_recipe, recipeArray);
+        //String url = recipeArray.get(2).getImageSrc().substring(7, recipeArray.get(1).getImageSrc().length()-2);
 
+        //recipe_preview.loadUrl(url);
 
         return rootView;
     }
@@ -88,7 +111,7 @@ public class SelectorFragment extends Fragment {
     public interface OnSelectorInteractionListener {
         public void populate(WebView image, TextView text);
         public void swipedLeft();
-        public void swipedRight(Recipe recipe, ImageView view);
+        public void swipedRight(Recipe recipe, WebView image);
     }
 
  }

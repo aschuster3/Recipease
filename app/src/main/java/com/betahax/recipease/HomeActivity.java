@@ -24,8 +24,7 @@ import com.betahax.recipease.model.Recipe;
 
 public class HomeActivity extends Activity implements
         HomeFragment.OnHomeFragmentInteractionListener,
-        SelectorFragment.OnSelectorInteractionListener
-    {
+        SelectorFragment.OnSelectorInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +119,7 @@ public class HomeActivity extends Activity implements
     }
 
     @Override
-    public void swipedRight(Recipe recipe, ImageView view) {
+    public void swipedRight(Recipe recipe, WebView image) {
 
     }
 }

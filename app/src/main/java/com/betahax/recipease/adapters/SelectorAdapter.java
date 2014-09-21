@@ -5,10 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.betahax.recipease.R;
+import com.betahax.recipease.api.ImageLoadTask;
 import com.betahax.recipease.model.Recipe;
 
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ public class SelectorAdapter extends ArrayAdapter<Recipe> {
     }
 
     public class ViewHolder {
-        TextView tvName;
+        WebView webRecipe;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -45,11 +48,11 @@ public class SelectorAdapter extends ArrayAdapter<Recipe> {
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
             LayoutInflater vi;
             vi = (LayoutInflater) getContext().getSystemService(inflater);
-            view = vi.inflate(R.layout.grid, parent, false);
+            view = vi.inflate(R.layout.item_recipe, parent, false);
 
             holder = new ViewHolder();
 
-            holder.tvName = (TextView) view.findViewById(R.id.tvName);
+            holder.webRecipe = (WebView) view.findViewById(R.id.webRecipe);
 
             view.setTag(holder);
 
@@ -58,7 +61,10 @@ public class SelectorAdapter extends ArrayAdapter<Recipe> {
             holder = (ViewHolder) view.getTag();
         }
 
-        //holder.tvName.setText();
+        Recipe recipe = recipes.get(position);
+        String url = recipe.getImageSrc().substring(2, recipe.getImageSrc().length()-2);
+        holder.webRecipe.loadData(url, "text/html; charset=UTF-8", null);
+
 
         return view;
     }
