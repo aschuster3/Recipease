@@ -8,9 +8,18 @@ import com.betahax.recipease.database.RecipeDBHelper;
 import com.betahax.recipease.database.contracts.RecipeContract;
 import com.betahax.recipease.model.Recipe;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -61,11 +70,39 @@ public class DatabaseReader {
         return ingredients;
     }
 
-    public static void saveRecipe(Context context, String recipeName, String ingredients, String imageSrc) {
+    public static final String URL = "http://api.yummly.com/v1/api/recipe/",
+                               URL_END = "?_app_id=02d4c5e9&_app_key=dbed5bd0b04bf806e7ef81f440640548";
+
+    public static void saveRecipe(Context context, String id, String recipeName, String ingredients, String imageSrc) {
         SQLiteDatabase db = new RecipeDBHelper(context).getWritableDatabase();
 
         // TODO query api for recipe information and other jazzy information
+        String responseString, sourceUrl;
+        try {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response = httpclient.execute(new HttpGet(URL + id + URL_END));
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
+                out.close();
+                responseString = out.toString();
 
-        //db.rawQuery(RecipeContract.putRecipe())
+                JSONObject obj = new JSONObject(responseString);
+                sourceUrl = obj.getJSONObject("source").getString("sourceRecipeUrl");
+
+                db.execSQL(RecipeContract.putRecipe(id, recipeName, ingredients, imageSrc, sourceUrl));
+            } else {
+                //Closes the connection.
+                response.getEntity().getContent().close();
+            }
+
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            db.close();
+        }
     }
 }
