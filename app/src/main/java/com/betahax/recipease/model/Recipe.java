@@ -1,11 +1,12 @@
 package com.betahax.recipease.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Owner on 9/20/2014.
  */
-public class Recipe {
+public class Recipe  implements Serializable {
 
     private String id;
     private String name;

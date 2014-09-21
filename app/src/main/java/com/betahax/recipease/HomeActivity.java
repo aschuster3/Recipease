@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,15 +17,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.betahax.recipease.api.Globals;
 import com.betahax.recipease.fragments.HomeFragment;
 import com.betahax.recipease.fragments.RecipeBookListFragment;
 import com.betahax.recipease.fragments.SelectorFragment;
 import com.betahax.recipease.model.Recipe;
 
+import java.util.ArrayList;
+
 
 public class HomeActivity extends Activity implements
         HomeFragment.OnHomeFragmentInteractionListener,
         SelectorFragment.OnSelectorInteractionListener{
+
+    Globals objGlobals;
+    ArrayList<Recipe> emptyRecipeArray = new ArrayList<Recipe>();
+    String URL = "http://api.yummly.com/v1/api/recipes?_app_id=02d4c5e9&_app_key=dbed5bd0b04bf806e7ef81f440640548";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,8 @@ public class HomeActivity extends Activity implements
         setContentView(R.layout.activity_home);
         Fragment homeFragment = HomeFragment.newInstance();
         getFragmentManager().beginTransaction().replace(R.id.container, homeFragment).addToBackStack("Lol").commit();
+
+        objGlobals = new Globals();
     }
     // Hay
 
@@ -91,14 +101,18 @@ public class HomeActivity extends Activity implements
     @Override
     public void OnRecipeBookInteraction() {
         Intent myIntent = new Intent(this, RecipeBook.class);
+
         startActivity(myIntent);
 
     }
 
     @Override
     public void OnRandomInteraction() {
-        Intent myIntent = new Intent(this, Selector.class);
-        startActivity(myIntent);
+
+        PerformGetEmptyASYNC get = new PerformGetEmptyASYNC();
+        get.execute();
+
+
     }
 
     @Override
@@ -109,8 +123,18 @@ public class HomeActivity extends Activity implements
     }
 
     @Override
-    public void populate(WebView image, TextView text) {
-
+    public void populate(WebView view, TextView recipe_name, ArrayList<Recipe> recipeInputArray, int count) {
+        if(count < recipeInputArray.size()){
+            String url = recipeInputArray.get(count).getImageSrc().substring(7, recipeInputArray.get(count).getImageSrc().length()-2);
+            view.loadUrl(url);
+            recipe_name.setText(recipeInputArray.get(count).getName());
+        } else {
+            //Reset to #1
+            String url = recipeInputArray.get(0).getImageSrc().substring(7, recipeInputArray.get(0).getImageSrc().length()-2);
+            view.loadUrl(url);
+            recipe_name.setText(recipeInputArray.get(0).getName());
+            count = 0;
+        }
     }
 
     @Override
@@ -121,5 +145,21 @@ public class HomeActivity extends Activity implements
     @Override
     public void swipedRight(Recipe recipe, WebView image) {
 
+    }
+
+    class PerformGetEmptyASYNC extends AsyncTask<Void, Void,   ArrayList<Recipe> > {
+
+        protected void onPostExecute( ArrayList<Recipe> result) {
+
+            Fragment selectorFragment = SelectorFragment.newInstance(emptyRecipeArray);
+            getFragmentManager().beginTransaction().replace(R.id.container, selectorFragment).addToBackStack(null).commit();
+
+        }
+
+        @Override
+        protected   ArrayList<Recipe> doInBackground(Void... voids) {
+            return objGlobals.performGET(URL, emptyRecipeArray);
+
+        }
     }
 }

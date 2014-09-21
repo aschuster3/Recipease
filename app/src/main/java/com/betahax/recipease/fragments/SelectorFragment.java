@@ -2,18 +2,23 @@ package com.betahax.recipease.fragments;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.betahax.recipease.InfoActivity;
 import com.betahax.recipease.R;
+import com.betahax.recipease.RecipeBook;
 import com.betahax.recipease.api.ImageLoadTask;
 import com.betahax.recipease.model.Recipe;
 import com.betahax.recipease.adapters.SelectorAdapter;
@@ -39,6 +44,10 @@ public class SelectorFragment extends Fragment{
 
     ListView lv;
     WebView recipe_preview;
+    TextView recipe_name;
+    Button yes_button, info_button;
+
+    int count;
 
     private SelectorAdapter selectorAdapter;
 
@@ -47,17 +56,11 @@ public class SelectorFragment extends Fragment{
     public static SelectorFragment newInstance( ArrayList<Recipe> recipeArrayFromActivity) {
         SelectorFragment fragment = new SelectorFragment();
         Bundle args = new Bundle();
-        args.putSerializable("recipeArray", recipeArrayFromActivity);
+        args.putSerializable("recipeArrayFromActivity", recipeArrayFromActivity);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static SelectorFragment newInstance( ) {
-        SelectorFragment fragment = new SelectorFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
     public SelectorFragment() {
         // Required empty public constructor
     }
@@ -67,9 +70,10 @@ public class SelectorFragment extends Fragment{
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             listPosition = getArguments().getInt(List_Position);
+            recipeArray = (ArrayList<Recipe>) getArguments().getSerializable("recipeArrayFromActivity");
         }
-        recipeArray = (ArrayList<Recipe>) getArguments().getSerializable("recipeArray");
 
+        count = 0;
 
 
     }
@@ -80,13 +84,35 @@ public class SelectorFragment extends Fragment{
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_selector, container, false);
 
+        recipe_name = (TextView) rootView.findViewById(R.id.recipe_name);
         recipe_preview = (WebView) rootView.findViewById(R.id.recipe_preview);
+        yes_button = (Button) rootView.findViewById(R.id.yes_button);
+        info_button = (Button) rootView.findViewById(R.id.info_button);
+        recipe_preview.setBackgroundColor(Color.argb(1, 0, 0, 0));
+        recipe_preview.getSettings().setLoadWithOverviewMode(true);
+        recipe_preview.getSettings().setUseWideViewPort(true);
         selectorAdapter = new SelectorAdapter(getActivity(),
                 R.layout.item_recipe, recipeArray);
-        //String url = recipeArray.get(2).getImageSrc().substring(7, recipeArray.get(1).getImageSrc().length()-2);
 
-        //recipe_preview.loadUrl(url);
+        mListener.populate(recipe_preview, recipe_name, recipeArray, count);
+        yes_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count ++;
+                mListener.populate(recipe_preview, recipe_name, recipeArray, count);
+            }
+        });
 
+        info_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(getActivity(), InfoActivity.class);
+                myIntent.putExtra("imageSrc", recipeArray.get(count).getImageSrc());
+                myIntent.putExtra("recipeName", recipeArray.get(count).getName());
+
+                startActivity(myIntent);
+            }
+        });
         return rootView;
     }
 
@@ -108,8 +134,12 @@ public class SelectorFragment extends Fragment{
         mListener = null;
     }
 
+    public void getNextPicture(WebView view, TextView recipe_name, ArrayList<Recipe> recipeInputArray, int count) {
+
+        //Callback
+    }
     public interface OnSelectorInteractionListener {
-        public void populate(WebView image, TextView text);
+        public void populate(WebView view, TextView recipe_name, ArrayList<Recipe> recipeInputArray, int count);
         public void swipedLeft();
         public void swipedRight(Recipe recipe, WebView image);
     }

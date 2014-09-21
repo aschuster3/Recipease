@@ -33,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.betahax.recipease.api.Globals;
 import com.betahax.recipease.fragments.SelectorFragment;
 import com.betahax.recipease.model.Recipe;
 
@@ -48,7 +49,7 @@ public class Selector extends Activity implements
 
     ArrayList<Recipe> recipeArray = new ArrayList<Recipe>();
 
-
+    Globals objGlobals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +66,10 @@ public class Selector extends Activity implements
         positionOfRecipe = 20;
 
         formStrings(cookTime, base, mealTime, flavor);
+        objGlobals = new Globals();
 
-        URL = buildURL(strMealTime, strBase, strFlavor, strMaxCookTime, appID, appKey, positionOfRecipe);
+        URL = objGlobals.buildURL(strMealTime, strBase, strFlavor, strMaxCookTime, appID, appKey, positionOfRecipe);
+
 
         PerformGetASYNC get = new PerformGetASYNC();
         get.execute();
@@ -97,16 +100,7 @@ public class Selector extends Activity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private String buildURL(String strMealTime, String strBase, String strFlavor, String strMaxCookTime,
-                           String appID, String appKey, int positionOfRecipe) {
-        String strURL = "http://api.yummly.com/v1/api/recipes?_app_id=" + appID + "&_app_key=" + appKey + "&q=" + strBase +
-                "&maxTotalTimeInSeconds=" + strMaxCookTime + "&flavor." + strFlavor + ".min=0.8&maxResult=20&start="+positionOfRecipe;
-        this.positionOfRecipe  += 20;
 
-
-        return strURL;
-
-    }
 
     private void formStrings (int cookTime, int base, int mealTime, int flavor) {
 
@@ -224,8 +218,18 @@ public class Selector extends Activity implements
     }
 
     @Override
-    public void populate(WebView image, TextView text) {
-
+    public void populate(WebView view, TextView recipe_name, ArrayList<Recipe> recipeInputArray, int count) {
+        if(count < recipeInputArray.size()){
+            String url = recipeInputArray.get(count).getImageSrc().substring(7, recipeInputArray.get(count).getImageSrc().length()-2);
+            view.loadUrl(url);
+            recipe_name.setText(recipeInputArray.get(count).getName());
+        } else {
+            //Reset to #1
+            String url = recipeInputArray.get(0).getImageSrc().substring(7, recipeInputArray.get(0).getImageSrc().length()-2);
+            view.loadUrl(url);
+            recipe_name.setText(recipeInputArray.get(0).getName());
+            count = 0;
+        }
     }
 
     @Override
@@ -249,55 +253,11 @@ public class Selector extends Activity implements
 
         @Override
         protected   ArrayList<Recipe> doInBackground(Void... voids) {
-            return performGET();
+            return objGlobals.performGET(URL, recipeArray);
 
         }
     }
-    public   ArrayList<Recipe> performGET(){
-        String responseString = "";
-       try {
-           HttpClient httpclient = new DefaultHttpClient();
-           HttpResponse response = httpclient.execute(new HttpGet(URL));
-           StatusLine statusLine = response.getStatusLine();
-           if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-               ByteArrayOutputStream out = new ByteArrayOutputStream();
-               response.getEntity().writeTo(out);
-               out.close();
-               responseString = out.toString();
-               //..more logic
 
-           } else {
-               //Closes the connection.
-               response.getEntity().getContent().close();
-           }
-       } catch (IOException ie) {
-
-       }
-
-        try {
-            //Recipe object
-            JSONObject jsonObj = new JSONObject(responseString);
-            //Recipes JSONArray
-            JSONArray jsonRecipesArray = jsonObj.getJSONArray("matches");
-
-            for (int i = 0; i < jsonRecipesArray.length(); i ++) {
-                Recipe recipe = new Recipe();
-                JSONObject childJSONObject = (JSONObject) jsonRecipesArray.get(i);
-                recipe.setID(childJSONObject.getString("id"));
-                recipe.setImgSrc(childJSONObject.getString("imageUrlsBySize"));
-                recipe.setname(childJSONObject.getString("sourceDisplayName"));
-                recipe.setRecipeURL(childJSONObject.getString("smallImageUrls"));
-                recipe.setIngredients(jsonArrayToStringArray(childJSONObject.getString("ingredients")));
-
-                recipeArray.add(i, recipe);
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return recipeArray;
-    }
 
 
     /**

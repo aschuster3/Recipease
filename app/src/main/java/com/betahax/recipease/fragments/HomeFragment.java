@@ -3,6 +3,7 @@ package com.betahax.recipease.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,10 @@ import android.widget.TextView;
 import com.betahax.recipease.QuestionTree;
 import com.betahax.recipease.R;
 import com.betahax.recipease.RecipeBook;
+import com.betahax.recipease.api.Globals;
+import com.betahax.recipease.model.Recipe;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +37,10 @@ public class HomeFragment extends Fragment {
     Button btnRandomRecipes;
     private OnHomeFragmentInteractionListener mListener;
 
+    Globals objGlobals;
+    ArrayList<Recipe> emptyRecipeArray = new ArrayList<Recipe>();
+    String URL = "http://api.yummly.com/v1/api/recipes?_app_id=02d4c5e9&_app_key=dbed5bd0b04bf806e7ef81f440640548";
+
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -45,6 +54,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        objGlobals = new Globals();
+
 
     }
 
@@ -71,8 +82,8 @@ public class HomeFragment extends Fragment {
                 //Intent myIntent = new Intent("com.betahax.recipease.RecipeBook");
                 //startActivity(myIntent);
                 mListener.OnRandomInteraction();
-                Fragment selectorFragment = SelectorFragment.newInstance();
-                getFragmentManager().beginTransaction().replace(R.id.container, selectorFragment).addToBackStack("Lol").commit();
+                PerformGetEmptyASYNC get = new PerformGetEmptyASYNC();
+                get.execute();
 
             }
         });
@@ -122,4 +133,19 @@ public class HomeFragment extends Fragment {
         public void OnSearchInteraction();
     }
 
+    class PerformGetEmptyASYNC extends AsyncTask<Void, Void,   ArrayList<Recipe> > {
+
+        protected void onPostExecute( ArrayList<Recipe> result) {
+
+            Fragment selectorFragment = SelectorFragment.newInstance(emptyRecipeArray);
+            getFragmentManager().beginTransaction().replace(R.id.container, selectorFragment).addToBackStack(null).commit();
+
+        }
+
+        @Override
+        protected   ArrayList<Recipe> doInBackground(Void... voids) {
+            return objGlobals.performGET(URL, emptyRecipeArray);
+
+        }
+    }
 }
