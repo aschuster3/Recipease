@@ -3,6 +3,7 @@ package com.betahax.recipease;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -94,6 +95,14 @@ public class Selector extends Activity implements
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.home) {
+            Intent myIntent = new Intent(this, HomeActivity.class);
+            startActivity(myIntent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             return true;
         }
 

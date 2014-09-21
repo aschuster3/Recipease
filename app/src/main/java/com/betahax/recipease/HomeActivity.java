@@ -103,7 +103,7 @@ public class HomeActivity extends Activity implements
         Intent myIntent = new Intent(this, RecipeBook.class);
 
         startActivity(myIntent);
-
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
@@ -119,6 +119,7 @@ public class HomeActivity extends Activity implements
     public void OnSearchInteraction() {
         Intent myIntent = new Intent(this, QuestionTree.class);
         startActivity(myIntent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
     }
 
@@ -152,6 +153,7 @@ public class HomeActivity extends Activity implements
         protected void onPostExecute( ArrayList<Recipe> result) {
 
             Fragment selectorFragment = SelectorFragment.newInstance(emptyRecipeArray);
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             getFragmentManager().beginTransaction().replace(R.id.container, selectorFragment).addToBackStack(null).commit();
 
         }

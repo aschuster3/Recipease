@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -66,16 +68,20 @@ public class SelectorFragment extends Fragment{
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Add your menu entries here
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             listPosition = getArguments().getInt(List_Position);
             recipeArray = (ArrayList<Recipe>) getArguments().getSerializable("recipeArrayFromActivity");
         }
 
         count = 0;
-
-
     }
 
     @Override
