@@ -5,35 +5,33 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+
 import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
+
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
+
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
+
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.logging.Logger;
+
+import com.betahax.recipease.model.Recipe;
 
 
 public class Selector extends Activity {
@@ -43,6 +41,8 @@ public class Selector extends Activity {
     String URL;
     int cookTime, base, mealTime, flavor, positionOfRecipe;
     String strBase, strMealTime, strFlavor, strMaxCookTime;
+
+    ArrayList<Recipe> recipeArray = new ArrayList<Recipe>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,31 +93,19 @@ public class Selector extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String buildURL(String strMealTime, String strBase, String strFlavor, String strMaxCookTime,
+    private String buildURL(String strMealTime, String strBase, String strFlavor, String strMaxCookTime,
                            String appID, String appKey, int positionOfRecipe) {
-        String strURL = "";
+        String strURL = "http://api.yummly.com/v1/api/recipes?_app_id=" + appID + "&_app_key=" + appKey + "&q=" + strBase +
+                "&maxTotalTimeInSeconds=" + strMaxCookTime + "&flavor." + strFlavor + ".min=0.8&allowedCourse[]=course^course-" +
+                strMealTime + "&maxResult=20&start="+positionOfRecipe;
+        this.positionOfRecipe  += 20;
 
-        try {
-            strURL = "http://api.yummly.com/v1/api/recipes?" +
-                    "_app_id=" + URLEncoder.encode(appID, "UTF-8") +
-                    "&_app_key=" + URLEncoder.encode(appKey, "UTF-8") +
-                    "&q=" + URLEncoder.encode(strBase, "UTF-8") +
-                    "&maxTotalTimeInSeconds=" + URLEncoder.encode(strMaxCookTime, "UTF-8") +
-                    "&flavor." + URLEncoder.encode(strFlavor, "UTF-8") + ".min=0.8" +
-                    "&allowedCourse[]=" + URLEncoder.encode("course^course-" + strMealTime, "UTF-8") +
-                    "&maxResult=20&start=" + URLEncoder.encode(positionOfRecipe + "", "UTF-8");
-            this.positionOfRecipe += 20;
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
-
-        Log.i("Selector", strURL);
 
         return strURL;
 
-
     }
-    public void formStrings (int cookTime, int base, int mealTime, int flavor) {
+
+    private void formStrings (int cookTime, int base, int mealTime, int flavor) {
 
 
          switch (cookTime) {
@@ -215,9 +203,25 @@ public class Selector extends Activity {
 
     }
 
+    private ArrayList<String> jsonArrayToStringArray(String rawJSON) {
+        ArrayList<String> ingredients = new ArrayList<String>();
+
+        try {
+            JSONArray arr = new JSONArray(rawJSON);
+
+            for(int i = 0; i < arr.length(); i++) {
+                ingredients.add(arr.getString(i));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ingredients;
+    }
     public class PerformGetASYNC extends AsyncTask<Void, Void, String> {
 
-        protected void onPostExecute(String response) {
+       protected void onPostExecute(String response) {
 
             Toast toast = Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG);
             toast.show();
@@ -225,7 +229,7 @@ public class Selector extends Activity {
 
         @Override
         protected String doInBackground(Void... voids) {
-             return performGET();
+            return performGET();
 
         }
     }
@@ -233,8 +237,7 @@ public class Selector extends Activity {
         String responseString = "";
        try {
            HttpClient httpclient = new DefaultHttpClient();
-           HttpGet getMethod = new HttpGet(URL);
-           HttpResponse response = httpclient.execute(getMethod);
+           HttpResponse response = httpclient.execute(new HttpGet(URL));
            StatusLine statusLine = response.getStatusLine();
            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -242,25 +245,37 @@ public class Selector extends Activity {
                out.close();
                responseString = out.toString();
                //..more logic
+
            } else {
                //Closes the connection.
                response.getEntity().getContent().close();
            }
-
-           //Recipe object
-           JSONObject jsonObj = new JSONObject(responseString);
-           //Recipes JSONArray
-           JSONArray recipesArray = jsonObj.getJSONArray("matches");
-           for (int i = 0; i < recipesArray.length(); i ++) {
-               JSONObject c = recipesArray.getJSONObject(i);
-
-           }
        } catch (IOException ie) {
-           ie.printStackTrace();
-       } catch (JSONException e) {
-            e.printStackTrace();
+
        }
-       return responseString;
+
+        try {
+            //Recipe object
+            JSONObject jsonObj = new JSONObject(responseString);
+            //Recipes JSONArray
+            JSONArray jsonRecipesArray = jsonObj.getJSONArray("Boobs");
+            for (int i = 0; i < jsonRecipesArray.length(); i ++) {
+                Recipe recipe = new Recipe();
+                JSONObject childJSONObject = jsonRecipesArray.getJSONObject(i);
+                recipe.setID(childJSONObject.getString("id"));
+                recipe.setImgSrc(childJSONObject.getString("imageUrlsBySize"));
+                recipe.setname(childJSONObject.getString("sourceDisplayName"));
+                recipe.setRecipeURL(childJSONObject.getString("smallImageUrls"));
+                recipe.setIngredients(jsonArrayToStringArray(childJSONObject.getString("ingredients")));
+
+                recipeArray.add(i, recipe);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return responseString;
     }
 
 

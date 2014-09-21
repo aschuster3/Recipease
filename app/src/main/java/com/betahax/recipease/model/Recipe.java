@@ -12,13 +12,33 @@ public class Recipe {
     private ArrayList<String> ingredients;
     private String imageSrc;
     private String notes;
+    private String recipeURL;
 
     public void setNotes(String notes) {
         this.notes = notes;
     }
 
-    public String getId() {
+    public void setID(String id) {
+        this.id = id;
+    }
 
+    public void setIngredients(ArrayList<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setImgSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
+    }
+
+    public void setname(String name) {
+        this.name = name;
+    }
+
+    public void setRecipeURL(String recipeURL) {
+        this.recipeURL = recipeURL;
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -38,13 +58,20 @@ public class Recipe {
         return notes;
     }
 
-    public Recipe(String id, String name, ArrayList<String> ingredients, String imageSrc, String notes) {
+    public String getRecipeURL() {
+        return recipeURL;
+    }
+
+    public Recipe() {}
+    public Recipe(String id, String name, ArrayList<String> ingredients, String imageSrc, String notes,
+                  String recipeURL) {
 
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.imageSrc = imageSrc;
         this.notes = notes;
+        this.recipeURL = recipeURL;
     }
 }
 
