@@ -103,8 +103,8 @@ public class Selector extends Activity {
                     "&_app_key=" + URLEncoder.encode(appKey, "UTF-8") +
                     "&q=" + URLEncoder.encode(strBase, "UTF-8") +
                     "&maxTotalTimeInSeconds=" + URLEncoder.encode(strMaxCookTime, "UTF-8") +
-                    "&flavor." + URLEncoder.encode(strFlavor, "UTF-8") +
-                    ".min=0.8&allowedCourse[]=" + URLEncoder.encode("course^course-" + strMealTime, "UTF-8") +
+                    "&flavor." + URLEncoder.encode(strFlavor, "UTF-8") + ".min=0.8" +
+                    "&allowedCourse[]=" + URLEncoder.encode("course^course-" + strMealTime, "UTF-8") +
                     "&maxResult=20&start=" + URLEncoder.encode(positionOfRecipe + "", "UTF-8");
             this.positionOfRecipe += 20;
         } catch (UnsupportedEncodingException ex) {
