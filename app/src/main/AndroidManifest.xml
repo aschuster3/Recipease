@@ -41,9 +41,9 @@
         <activity
             android:name="com.betahax.recipease.InfoActivity"
             android:label="@string/title_activity_info"
-            android:parentActivityName="com.betahax.recipease.HomeActivity" >
+            android:parentActivityName="com.betahax.recipease.Selector" >
             <meta-data
-                android:name="android.support.HomeActivity"
+                android:name="android.support.Selector"
                 android:value="com.betahax.recipease.InfoActivity" />>
         </activity>
         <activity
